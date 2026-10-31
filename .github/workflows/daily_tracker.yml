@@ -2,8 +2,11 @@ name: Daily Internship Tracker
 
 on:
   schedule:
-    - cron: '0 8 * * *' # Runs every day at 8:00 AM UTC
-  workflow_dispatch: # Allows manual triggers from GitHub UI
+    - cron: '0 8 * * *' # Runs daily at 8:00 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   run-tracker:
@@ -19,11 +22,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install google-genai gspread requests beautifulsoup4
+          pip install google-genai requests beautifulsoup4
 
       - name: Run script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # You can store your gspread service_account.json contents as a base64 secret or file secret
         run: |
           python main.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/jobs.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update internship postings [skip ci]" && git push)
