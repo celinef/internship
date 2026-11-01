@@ -6,7 +6,8 @@ import requests
 from bs4 import BeautifulSoup
 
 # 1. Initialize Gemini Client
-client = genai.Client()
+#client = genai.Client()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 # 2. Filter Criteria Configuration
 CONFIG = {
