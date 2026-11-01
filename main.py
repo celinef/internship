@@ -85,7 +85,7 @@ def evaluate_with_gemini(job_text):
 
     try:
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='gemini-flash-latest',
             contents=prompt,
         )
         cleaned = response.text.strip().replace("```json", "").replace("```", "")
