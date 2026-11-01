@@ -19,7 +19,6 @@ CONFIG = {
 # 3. Load Existing Web Data to Prevent Duplicates
 DATA_FILE = "docs/jobs.json"
 os.makedirs("docs", exist_ok=True)
-
 if os.path.exists(DATA_FILE):
     with open(DATA_FILE, "r") as f:
         try:
@@ -28,8 +27,10 @@ if os.path.exists(DATA_FILE):
             existing_jobs = []
 else:
     existing_jobs = []
-
-existing_hashes = {job.get("hash") for job in existing_jobs if "hash" in job}
+    # existing_hashes = {job.get("hash") for job in existing_jobs if "hash" in job}
+    # Create the file immediately so it always exists for git
+    with open(DATA_FILE, "w") as f:
+        json.dump([], f)
 
 # 4. Target URLs to Scrape
 TARGET_URLS = [
