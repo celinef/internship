@@ -105,7 +105,8 @@ def main():
             title = result.get("title", "Unknown Title")
             company = result.get("company", "Unknown Company")
             job_hash = hashlib.md5(f"{title}-{company}".lower().encode()).hexdigest()
-            
+            existing_hashes = {job.get("hash") for job in existing_jobs if "hash" in job}
+
             if job_hash not in existing_hashes:
                 existing_hashes.add(job_hash)
                 new_entries.append({
